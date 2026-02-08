@@ -20,7 +20,9 @@ DOC;
 
 $args = Docopt::handle($doc, array('version' => '1.0.0'));
 
-if ($result['--help']) {
-    echo $doc;
-    exit();
-}
+$firstPath = $args['<firstFile>'];
+$secondPath = $args['<secondFile>'];
+$format = $args['--format'] ?? 'stylish';
+
+$firstFile = \Hexlet\Code\ParserFactory::build($firstPath)->parse($firstPath);
+$secondFile = \Hexlet\Code\ParserFactory::build($secondPath)->parse($secondPath);
