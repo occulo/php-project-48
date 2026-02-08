@@ -14,10 +14,12 @@ class Differ
             } elseif (array_key_exists($key, $secondFile) && !array_key_exists($key, $firstFile)) {
                 $diff[$key] = ['status' => 'added', 'value' => $secondFile[$key]];
             } elseif (array_key_exists($key, $firstFile) && array_key_exists($key, $secondFile)) {
-                if ($firstFile[$key] !== $secondFile[$key]) {
-                    $diff[$key] = ['status' => 'changed', 'value' => ['old' => $firstFile[$key], 'new' => $secondFile[$key]]];
-                } else {
+                if ($firstFile[$key] === $secondFile[$key]) {
                     $diff[$key] = ['status' => 'unchanged', 'value' => $firstFile[$key]];
+                } elseif(is_array($firstFile[$key]) && is_array($secondFile[$key])) {
+                    $diff[$key] = ['status' => 'nested', 'children' => $this->gendiff($firstFile[$key], $secondFile[$key])];
+                } else {
+                    $diff[$key] = ['status' => 'changed', 'value' => ['old' => $firstFile[$key], 'new' => $secondFile[$key]]];
                 }
             }
             
