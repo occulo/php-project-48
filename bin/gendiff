@@ -26,3 +26,8 @@ $format = $args['--format'] ?? 'stylish';
 
 $firstFile = \Hexlet\Code\ParserFactory::build($firstPath)->parse($firstPath);
 $secondFile = \Hexlet\Code\ParserFactory::build($secondPath)->parse($secondPath);
+
+$differ = new \Hexlet\Code\Differ();
+$diff = $differ->genDiff($firstFile, $secondFile);
+
+echo \Hexlet\Code\FormatterFactory::build($format)->format($diff);
