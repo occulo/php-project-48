@@ -21,7 +21,11 @@ class StylishFormatter implements FormatterInterface
         ];
         $output = [];
         foreach ($data as $key => $node) {
-            if ($node['status'] === 'changed') {
+            if ($node['type'] === 'nested') {
+                $children = $this->renderLevel($node['children'], $depth + 2);
+                $output[] = "{$indent}{$signs[$node['status']]} {$key}: {\n" . join("\n", $children) . "\n{$indent}  }";
+                continue;
+            } elseif ($node['status'] === 'changed') {
                 $output[] = "{$indent}{$signs['removed']} {$key}: {$this->stringifyValue($node['value']['old'])}";
                 $output[] = "{$indent}{$signs['added']} {$key}: {$this->stringifyValue($node['value']['new'])}";
                 continue;
@@ -33,7 +37,10 @@ class StylishFormatter implements FormatterInterface
 
     private function stringifyValue(mixed $value): string
     {
-        if (is_bool($value)) {
+        if (is_array($value)) {
+            $array = join(', ', $value);
+            return "[ {$array} ]";
+        } elseif (is_bool($value)) {
             return $value ? 'true' : 'false';
         }
         return $value === null ? 'null' : (string) $value;
