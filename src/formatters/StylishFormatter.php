@@ -33,7 +33,7 @@ class StylishFormatter implements FormatterInterface
     {
         if ($node['status'] === 'nested') {
             $children = join("\n", $this->renderLevel($node['children'], $depth + 1));
-            return "{$this->renderPrefix($node['status'], $depth)} {$key}: {\n{$children}\n{$this->getIndent($depth - 1)}}";
+            return "{$this->renderPrefix($node['status'], $depth)} {$key}: {\n{$children}\n{$this->getIndent($depth)}}";
         }
         if ($node['status'] === 'changed') {
             return join("\n", [
