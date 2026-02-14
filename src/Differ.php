@@ -8,6 +8,7 @@ class Differ
     private const STATUS_CHANGED = 'changed';
     private const STATUS_REMOVED = 'removed';
     private const STATUS_ADDED = 'added';
+    private const STATUS_NESTED = 'nested';
 
     public function genDiff(array $firstFile, array $secondFile): array
     {
@@ -25,31 +26,25 @@ class Differ
         $secondValue = array_key_exists($key, $secondFile) ? $secondFile[$key] : null;
         $node = [];
         if (array_key_exists($key, $firstFile) && array_key_exists($key, $secondFile)) {
-            if ($firstValue === $secondValue) {
+            if ($this->isAssoc($firstValue) && $this->isAssoc($secondValue)) {
+                $node['status'] = self::STATUS_NESTED;
+                $node['children'] = $this->genDiff(
+                    is_array($firstValue) ? $firstValue : [],
+                    is_array($secondValue) ? $secondValue : []
+                );
+            } elseif ($firstValue === $secondValue) {
                 $node['status'] = self::STATUS_UNCHANGED;
+                $node['value'] = $firstValue;
             } else {
                 $node['status'] = self::STATUS_CHANGED;
+                $node['value'] = [ 'old' => $firstValue, 'new' => $secondValue];
             }
         } elseif (array_key_exists($key, $firstFile)) {
             $node['status'] = self::STATUS_REMOVED;
+            $node['value'] = $firstValue;
         } else {
             $node['status'] = self::STATUS_ADDED;
-        }
-        if ($this->isAssoc($firstValue) || $this->isAssoc($secondValue)) {
-            $node['type'] = 'parent';
-            $node['children'] = $this->genDiff(
-                is_array($firstValue) ? $firstValue : [],
-                is_array($secondValue) ? $secondValue : []
-            );
-        } else {
-            $node['type'] = 'child';
-            if ($node['status'] === self::STATUS_CHANGED) {
-                $node['value'] = [ 'old' => $firstValue, 'new' => $secondValue];
-            } elseif ($node['status'] === self::STATUS_ADDED) {
-                $node['value'] = $secondValue;
-            } else {
-                $node['value'] = $firstValue;
-            }
+            $node['value'] = $secondValue;
         }
         return $node;
     }
