@@ -8,11 +8,11 @@ class StylishFormatter implements FormatterInterface
 {
     private const INDENT_SIZE = 4;
     private const SIGN_OFFSET = 2;
-    private const SIGN_MAP = [
+    private const SIGN_MAP    = [
         'unchanged' => ' ',
-        'removed' => '-',
-        'added' => '+',
-        'nested' => ' '
+        'removed'   => '-',
+        'added'     => '+',
+        'nested'    => ' ',
     ];
 
     public function format(array $data): string
@@ -28,20 +28,27 @@ class StylishFormatter implements FormatterInterface
         }
         return $output;
     }
-    
+
     private function renderNode(string $key, array $node, int $depth): string
     {
         if ($node['status'] === 'nested') {
-            $children = join("\n", $this->renderLevel($node['children'], $depth + 1));
+            $children = join("\n", $this->renderLevel($node['children'], ($depth + 1)));
             return "{$this->renderPrefix($node['status'], $depth)} {$key}: {\n{$children}\n{$this->getIndent($depth)}}";
         }
         if ($node['status'] === 'changed') {
-            return join("\n", [
-                "{$this->renderPrefix('removed', $depth)} {$key}: " . $this->stringifyValue($node['value']['old'], $depth),
-                "{$this->renderPrefix('added', $depth)} {$key}: " . $this->stringifyValue($node['value']['new'], $depth)
-            ]) ;
+            return join(
+                "\n",
+                [
+                    $this->renderPrefix('added', $depth) . $key . ': ' .
+                    $this->stringifyValue($node['value']['new'], $depth),
+                    $this->renderPrefix('added', $depth) . $key . ': ' .
+                    $this->stringifyValue($node['value']['new'], $depth),
+                ]
+            );
         }
-        return "{$this->renderPrefix($node['status'], $depth)} {$key}: " . $this->stringifyValue($node['value'], $depth);
+        return
+            $this->renderPrefix($node['status'], $depth) . $key . ': ' .
+            $this->stringifyValue($node['value'], $depth);
     }
 
     private function stringifyValue(mixed $value, int $depth = 0): string
@@ -54,17 +61,18 @@ class StylishFormatter implements FormatterInterface
         } else {
             if (array_is_list($value)) {
                 $lines = array_map(
-                    fn($v) => $this->getIndent($depth + 1) . $this->stringifyValue($v, $depth + 1),
+                    fn($v) => $this->getIndent($depth + 1) . $this->stringifyValue($v, ($depth + 1)),
                     $value
                 );
-                return "[\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . "]";
+                return "[\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . ']';
             } else {
                 $lines = array_map(
-                    fn($k, $v) => $this->getIndent($depth + 1) . "$k: " . $this->stringifyValue($v, $depth + 1),
+                    fn($k, $v) =>
+                    $this->getIndent($depth + 1) . $k . ': ' . $this->stringifyValue($v, ($depth + 1)),
                     array_keys($value),
                     $value
                 );
-                return "{\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . "}";
+                return "{\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . '}';
             }
         }
     }
@@ -77,6 +85,6 @@ class StylishFormatter implements FormatterInterface
 
     private function getIndent(int $depth): string
     {
-        return str_repeat(' ', $depth * self::INDENT_SIZE);
+        return str_repeat(' ', ($depth * self::INDENT_SIZE));
     }
 }

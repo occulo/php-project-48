@@ -4,7 +4,7 @@ namespace Hexlet\Code;
 
 class ParserFactory
 {
-    const ALLOWED_EXTENSIONS = [
+    private const ALLOWED_EXTENSIONS = [
         'json' => \Hexlet\Code\parsers\JsonParser::class,
     ];
 
@@ -15,7 +15,6 @@ class ParserFactory
             throw new \Exception('Unsupported file format');
         }
         $parserClass = self::ALLOWED_EXTENSIONS[$extension];
-        $parser = new $parserClass();
-        return $parser;
+        return new $parserClass();
     }
 }

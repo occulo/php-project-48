@@ -5,10 +5,10 @@ namespace Hexlet\Code;
 class Differ
 {
     private const STATUS_UNCHANGED = 'unchanged';
-    private const STATUS_CHANGED = 'changed';
-    private const STATUS_REMOVED = 'removed';
-    private const STATUS_ADDED = 'added';
-    private const STATUS_NESTED = 'nested';
+    private const STATUS_CHANGED   = 'changed';
+    private const STATUS_REMOVED   = 'removed';
+    private const STATUS_ADDED     = 'added';
+    private const STATUS_NESTED    = 'nested';
 
     public function genDiff(array $firstFile, array $secondFile): array
     {
@@ -22,29 +22,32 @@ class Differ
 
     private function buildNode(string $key, array $firstFile, array $secondFile): array
     {
-        $firstValue = array_key_exists($key, $firstFile) ? $firstFile[$key] : null;
+        $firstValue  = array_key_exists($key, $firstFile) ? $firstFile[$key] : null;
         $secondValue = array_key_exists($key, $secondFile) ? $secondFile[$key] : null;
-        $node = [];
+        $node        = [];
         if (array_key_exists($key, $firstFile) && array_key_exists($key, $secondFile)) {
             if ($this->isAssoc($firstValue) && $this->isAssoc($secondValue)) {
-                $node['status'] = self::STATUS_NESTED;
+                $node['status']   = self::STATUS_NESTED;
                 $node['children'] = $this->genDiff(
                     is_array($firstValue) ? $firstValue : [],
                     is_array($secondValue) ? $secondValue : []
                 );
             } elseif ($firstValue === $secondValue) {
                 $node['status'] = self::STATUS_UNCHANGED;
-                $node['value'] = $firstValue;
+                $node['value']  = $firstValue;
             } else {
                 $node['status'] = self::STATUS_CHANGED;
-                $node['value'] = [ 'old' => $firstValue, 'new' => $secondValue];
+                $node['value']  = [
+                    'old' => $firstValue,
+                    'new' => $secondValue,
+                ];
             }
         } elseif (array_key_exists($key, $firstFile)) {
             $node['status'] = self::STATUS_REMOVED;
-            $node['value'] = $firstValue;
+            $node['value']  = $firstValue;
         } else {
             $node['status'] = self::STATUS_ADDED;
-            $node['value'] = $secondValue;
+            $node['value']  = $secondValue;
         }
         return $node;
     }
