@@ -1,6 +1,16 @@
 {
-  "host": "hexlet.io",
-  "timeout": 50,
-  "proxy": "123.234.53.22",
-  "follow": false
+    "host": "hexlet.io",
+    "timeout": 50,
+    "proxy": "123.234.53.22",
+    "follow": false,
+    "ports": [80, 443, 8080],
+    "settings": {
+        "mode": "development",
+        "retry": 3,
+        "features": {
+            "auth": true,
+            "cache": false,
+            "beta": true
+        }
+    }
 }

@@ -1,5 +1,14 @@
 {
-  "timeout": 20,
-  "verbose": true,
-  "host": "hexlet.io"
+    "timeout": 20,
+    "verbose": true,
+    "host": "hexlet.io",
+    "ports": [80, 443],
+    "settings": {
+        "mode": "production",
+        "retry": 3,
+        "features": {
+            "auth": true,
+            "cache": true
+        }
+    }
 }
