@@ -1,0 +1,28 @@
+{
+    host: hexlet.io
+  + timeout: 20
+  - timeout: 50
+  - proxy: 123.234.53.22
+  - follow: false
+  + ports: [
+        80
+        443
+    ]
+  - ports: [
+        80
+        443
+        8080
+    ]
+    settings: {
+      + mode: production
+      - mode: development
+        retry: 3
+        features: {
+            auth: true
+          + cache: true
+          - cache: false
+          - beta: true
+        }
+    }
+  + verbose: true
+}
