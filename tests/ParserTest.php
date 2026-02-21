@@ -3,15 +3,15 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Hexlet\Code;
+use Hexlet\Code\ParserFactory;
 
 class ParserTest extends TestCase
 {
     public function testJsonParsing(): void
     {
         $filePath = __DIR__ . '/fixtures/file1.json';
-        $actual = \Hexlet\Code\ParserFactory::build($filePath)->parse($filePath);
-        $this->assertEquals([
+        $actual = ParserFactory::build($filePath)->parse($filePath);
+        $expected = [
             'host' => 'hexlet.io',
             'timeout' => 50,
             'proxy' => '123.234.53.22',
@@ -26,6 +26,7 @@ class ParserTest extends TestCase
                     'beta' => true
                 ]
             ]
-        ], $actual);
+        ];
+        $this->assertEquals($expected, $actual);
     }
 }
