@@ -11,8 +11,8 @@ class FormatterTest extends TestCase
 {
     public function testStylishFormatting(): void
     {
-        $firstPath = __DIR__ . '/fixtures/file1.json';
-        $secondPath = __DIR__ . '/fixtures/file2.json';
+        $firstPath = __DIR__ . '/fixtures/json/file1.json';
+        $secondPath = __DIR__ . '/fixtures/json/file2.json';
         $firstFile = ParserFactory::build($firstPath)->parse($firstPath);
         $secondFile = ParserFactory::build($secondPath)->parse($secondPath);
         $differ = new Differ();
