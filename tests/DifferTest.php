@@ -17,72 +17,61 @@ class DifferTest extends TestCase
         $differ = new Differ();
         $actual = $differ->genDiff($firstFile, $secondFile);
         $expected = [
-            'follow' => [
-                'status' => 'removed',
-                'value' => false
-            ],
-            'host' => [
-                'status' => 'unchanged',
-                'value' => 'hexlet.io'
-            ],
-            'ports' => [
-                'status' => 'changed',
-                'value' => [
-                    'old' => [80, 443, 8080],
-                    'new' => [80, 443]
-                ]
-            ],
-            'proxy' => [
-                'status' => 'removed',
-                'value' => '123.234.53.22'
-            ],
-            'settings' => [
+            'common' => [
                 'status' => 'nested',
                 'children' => [
-                    'features' => [
+                    'setting1' => ['status' => 'unchanged', 'value' => 'Value 1'],
+                    'setting2' => ['status' => 'removed', 'value' => 200],
+                    'setting3' => [
+                        'status' => 'changed',
+                        'value' => ['old' => true, 'new' => null],
+                    ],
+                    'setting6' => [
                         'status' => 'nested',
                         'children' => [
-                            'auth' => [
-                                'status' => 'unchanged',
-                                'value' => true
+                            'key' => ['status' => 'unchanged', 'value' => 'value'],
+                            'doge' => [
+                                'status' => 'nested',
+                                'children' => [
+                                    'wow' => [
+                                        'status' => 'changed',
+                                        'value' => ['old' => '', 'new' => 'so much'],
+                                    ],
+                                ],
                             ],
-                            'beta' => [
-                                'status' => 'removed',
-                                'value' => true
-                            ],
-                            'cache' => [
-                                'status' => 'changed',
-                                'value' => [
-                                    'old' => false,
-                                    'new' => true
-                                ]
-                            ]
-                        ]
+                            'ops' => ['status' => 'added', 'value' => 'vops'],
+                        ],
                     ],
-                    'mode' => [
+                    'follow' => ['status' => 'added', 'value' => false],
+                    'setting4' => ['status' => 'added', 'value' => 'blah blah'],
+                    'setting5' => [
+                        'status' => 'added',
+                        'value' => ['key5' => 'value5'],
+                    ],
+                ],
+            ],
+            'group1' => [
+                'status' => 'nested',
+                'children' => [
+                    'baz' => [
                         'status' => 'changed',
-                        'value' => [
-                            'old' => 'development',
-                            'new' => 'production'
-                        ]
+                        'value' => ['old' => 'bas', 'new' => 'bars'],
                     ],
-                    'retry' => [
-                        'status' => 'unchanged',
-                        'value' => 3
-                    ]
-                ]
+                    'foo' => ['status' => 'unchanged', 'value' => 'bar'],
+                    'nest' => [
+                        'status' => 'changed',
+                        'value' => ['old' => ['key' => 'value'], 'new' => 'str'],
+                    ],
+                ],
             ],
-            'timeout' => [
-                'status' => 'changed',
-                'value' => [
-                    'old' => 50,
-                    'new' => 20
-                ]
+            'group2' => [
+                'status' => 'removed',
+                'value' => ['abc' => 12345, 'deep' => ['id' => 45]],
             ],
-            'verbose' => [
+            'group3' => [
                 'status' => 'added',
-                'value' => true
-            ]
+                'value' => ['deep' => ['id' => ['number' => 45]], 'fee' => 100500],
+            ],
         ];
         $this->assertEquals($expected, $actual);
     }
