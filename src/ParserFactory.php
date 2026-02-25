@@ -6,6 +6,8 @@ class ParserFactory
 {
     private const ALLOWED_EXTENSIONS = [
         'json' => \Hexlet\Code\parsers\JsonParser::class,
+        'yaml' => \Hexlet\Code\parsers\YamlParser::class,
+        'yml'  => \Hexlet\Code\parsers\YamlParser::class
     ];
 
     public static function build(string $path): ParserInterface
