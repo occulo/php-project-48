@@ -7,6 +7,7 @@ class FormatterFactory
     private const ALLOWED_FORMATS = [
         'stylish' => \Hexlet\Code\formatters\StylishFormatter::class,
         'plain' => \Hexlet\Code\formatters\PlainFormatter::class,
+        'json' => \Hexlet\Code\formatters\JsonFormatter::class,
     ];
 
     public static function build(string $format = 'stylish'): FormatterInterface
