@@ -8,7 +8,7 @@ class PlainFormatter implements FormatterInterface
 {
     public function format(array $data): string
     {
-        return join("\n", $this->renderLevel($data));
+        return join("\n", $this->renderLevel($data)) . "\n";
     }
 
     private function renderLevel(array $data, string $path = ''): array
