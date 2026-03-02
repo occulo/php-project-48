@@ -20,41 +20,32 @@ class Differ
 
     private function buildNode(string $key, array $firstFile, array $secondFile): array
     {
-        [$firstValue, $secondValue] = [
-            $this->getValue($firstFile, $key),
-            $this->getValue($secondFile, $key)
-        ];
-        if (!is_null($firstValue) && !is_null($secondValue)) {
-            if ($this->isAssoc($firstValue) && $this->isAssoc($secondValue)) {
+        if (array_key_exists($key, $firstFile) && array_key_exists($key, $secondFile)) {
+            if ($this->isAssoc($firstFile[$key]) && $this->isAssoc($secondFile[$key])) {
                 return [
                     'status' => self::STATUS_NESTED,
-                    'children' => $this->genDiff($firstValue, $secondValue)
+                    'children' => $this->genDiff($firstFile[$key], $secondFile[$key])
                 ];
             }
-            if ($firstValue === $secondValue) {
+            if ($firstFile[$key] === $secondFile[$key]) {
                 return [
                     'status' => self::STATUS_UNCHANGED,
-                    'value' => $firstValue
+                    'value' => $firstFile[$key]
                 ];
             }
             return [
                 'status' => self::STATUS_CHANGED,
-                'value' => ['old' => $firstValue, 'new' => $secondValue]
+                'value' => ['old' => $firstFile[$key], 'new' => $secondFile[$key]]
             ];
         }
-        if (!is_null($firstValue)) {
-            return ['status' => self::STATUS_REMOVED, 'value' => $firstValue];
+        if (array_key_exists($key, $firstFile)) {
+            return ['status' => self::STATUS_REMOVED, 'value' => $firstFile[$key]];
         }
-        return ['status' => self::STATUS_ADDED, 'value' => $secondValue];
+        return ['status' => self::STATUS_ADDED, 'value' => $secondFile[$key]];
     }
 
     private function isAssoc(mixed $value): bool
     {
         return is_array($value) && !array_is_list($value);
-    }
-
-    private function getValue(array $array, string $key): mixed
-    {
-        return $array[$key] ?? null;
     }
 }
