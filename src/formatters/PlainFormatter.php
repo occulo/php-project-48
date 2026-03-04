@@ -13,14 +13,11 @@ class PlainFormatter implements FormatterInterface
 
     private function renderLevel(array $data, string $path = ''): array
     {
-        $output = [];
-        foreach ($data as $key => $node) {
-            if ($node['status'] === 'unchanged') {
-                continue;
-            }
-            $output[] = $this->renderNode($key, $node, $path);
-        }
-        return $output;
+        $filtered = array_filter($data, fn($node) => $node['status'] !== 'unchanged');
+        return array_map(
+            fn($key) => $this->renderNode($key, $filtered[$key], $path),
+            array_keys($filtered)
+        );
     }
 
     private function renderNode(string $key, array $node, string $path): string
