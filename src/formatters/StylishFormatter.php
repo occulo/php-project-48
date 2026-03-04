@@ -22,11 +22,11 @@ class StylishFormatter implements FormatterInterface
 
     private function renderLevel(array $data, int $depth): array
     {
-        $output = [];
-        foreach ($data as $key => $node) {
-            $output[] = $this->renderNode($key, $node, $depth);
-        }
-        return $output;
+        return array_map(
+            fn ($node, $key) => $this->renderNode($key, $node, $depth),
+            $data,
+            array_keys($data)
+        );
     }
 
     private function renderNode(string $key, array $node, int $depth): string
@@ -55,28 +55,36 @@ class StylishFormatter implements FormatterInterface
 
     private function stringifyValue(mixed $value, int $depth = 0): string
     {
-        if (!is_array($value)) {
-            if (is_bool($value)) {
-                return $value ? 'true' : 'false';
-            }
-            return $value === null ? 'null' : (string) $value;
-        } else {
-            if (array_is_list($value)) {
-                $lines = array_map(
-                    fn($v) => $this->getIndent($depth + 1) . $this->stringifyValue($v, ($depth + 1)),
-                    $value
-                );
-                return "[\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . ']';
-            } else {
-                $lines = array_map(
-                    fn($k, $v) =>
-                    $this->getIndent($depth + 1) . $k . ': ' . $this->stringifyValue($v, ($depth + 1)),
-                    array_keys($value),
-                    $value
-                );
-                return "{\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . '}';
-            }
+        if (is_array($value)) {
+            return $this->stringifyArray($value, $depth);
         }
+        if (is_bool($value)) {
+            return $this->stringifyBool($value);
+        }
+        return $value === null ? 'null' : (string) $value;
+    }
+
+    private function stringifyArray(array $array, int $depth): string
+    {
+        if (array_is_list($array)) {
+            $lines = array_map(
+                fn($value) => $this->getIndent($depth + 1) . $this->stringifyValue($value, ($depth + 1)),
+                $array
+            );
+            return "[\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . "]";
+        }
+        $lines = array_map(
+            fn($key, $value) => $this->getIndent($depth + 1) . $key . ': ' .
+            $this->stringifyValue($value, ($depth + 1)),
+            array_keys($array),
+            $array
+        );
+        return "{\n" . join("\n", $lines) . "\n" . $this->getIndent($depth) . "}";
+    }
+
+    private function stringifyBool(bool $value): string
+    {
+        return $value ? 'true' : 'false';
     }
 
     private function renderPrefix(string $status, int $depth): string
