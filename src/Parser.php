@@ -10,11 +10,14 @@ class Parser
 
     public function __construct(array $parsers = [])
     {
-        $this->parsers = $parsers ?: [
+        $this->parsers = [
             'json' => fn($data) => json_decode($data, true),
             'yaml' => fn($data) => Yaml::parse($data),
             'yml' => fn($data) => Yaml::parse($data),
         ];
+        if ($parsers) {
+            $this->parsers = $parsers;
+        }
     }
 
     public function parse(string $path): array
