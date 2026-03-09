@@ -12,11 +12,14 @@ class FormatterFactory
 
     public function __construct(array $formats = [])
     {
-        $this->formats = $formats ?: [
+        $this->formats = [
             'stylish' => StylishFormatter::class,
             'plain' => PlainFormatter::class,
             'json' => JsonFormatter::class,
         ];
+        if ($formats) {
+            $this->formats = $formats;
+        }
     }
 
     public function build(string $format = 'stylish'): FormatterInterface
