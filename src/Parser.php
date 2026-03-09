@@ -15,7 +15,7 @@ class Parser
             'yaml' => fn($data) => Yaml::parse($data),
             'yml' => fn($data) => Yaml::parse($data),
         ];
-        if (!empty($parsers)) {
+        if ($parsers !== []) {
             $this->parsers = $parsers;
         }
     }
