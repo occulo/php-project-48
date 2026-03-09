@@ -1,6 +1,6 @@
 <?php
 
-namespace Hexlet\Code\formatters;
+namespace Hexlet\Code\Formatters;
 
 use Hexlet\Code\FormatterInterface;
 
@@ -17,7 +17,7 @@ class StylishFormatter implements FormatterInterface
 
     public function format(array $data): string
     {
-        return sprintf("{\n%s\n}\n", join("\n", $this->renderLevel($data, 1)));
+        return sprintf("{\n%s\n}", join("\n", $this->renderLevel($data, 1)));
     }
 
     private function renderLevel(array $data, int $depth): array

@@ -1,6 +1,6 @@
 <?php
 
-namespace Hexlet\Code\formatters;
+namespace Hexlet\Code\Formatters;
 
 use Hexlet\Code\FormatterInterface;
 
@@ -9,7 +9,7 @@ class PlainFormatter implements FormatterInterface
     public function format(array $data): string
     {
         $output = join("\n", $this->renderLevel($data));
-        return "{$output}\n";
+        return $output;
     }
 
     private function renderLevel(array $data, string $path = ''): array

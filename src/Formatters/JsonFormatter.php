@@ -1,6 +1,6 @@
 <?php
 
-namespace Hexlet\Code\formatters;
+namespace Hexlet\Code\Formatters;
 
 use Hexlet\Code\FormatterInterface;
 
