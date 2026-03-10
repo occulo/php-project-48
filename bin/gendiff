@@ -32,4 +32,6 @@ $firstPath = $args['<firstFile>'];
 $secondPath = $args['<secondFile>'];
 $format = $args['--format'];
 
-echo (new GenDiff)()->genDiff($firstPath, $secondPath, $format) . PHP_EOL;
+$gendiff = new GenDiff();
+$output = $gendiff->genDiff($firstPath, $secondPath, $format);
+echo $output . PHP_EOL;
