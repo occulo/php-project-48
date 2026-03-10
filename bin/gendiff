@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use Differ\Differ\GenDiff;
+use function Differ\Differ\genDiff;
 
 $autoloadPath1 = __DIR__ . '/../../../autoload.php';
 $autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
@@ -32,6 +32,4 @@ $firstPath = $args['<firstFile>'];
 $secondPath = $args['<secondFile>'];
 $format = $args['--format'];
 
-$gendiff = new GenDiff();
-$output = $gendiff->genDiff($firstPath, $secondPath, $format);
-echo $output . PHP_EOL;
+echo genDiff($firstPath, $secondPath, $format) . PHP_EOL;
