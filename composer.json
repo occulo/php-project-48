@@ -5,9 +5,11 @@
     "bin": ["bin/gendiff"],
     "autoload": {
         "psr-4": {
-            "Hexlet\\Code\\": "src/",
-            "Differ\\Differ\\": "src/Differ/"
-        }
+            "Hexlet\\Code\\": "src/"
+        },
+        "files": [
+            "src/genDiff.php"
+        ]
     },
     "require": {
         "docopt/docopt": "^1.0",
