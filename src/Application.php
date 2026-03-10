@@ -2,21 +2,21 @@
 
 namespace Hexlet\Code;
 
-use Hexlet\Code\Differ;
 use Hexlet\Code\Parser;
+use Hexlet\Code\Differ;
 use Hexlet\Code\FormatterFactory;
 
 class Application
 {
-    private $parser;
-    private $factory;
-    private $differ;
+    private Parser $parser;
+    private Differ $differ;
+    private FormatterFactory $factory;
 
     public function __construct()
     {
         $this->parser = new Parser();
-        $this->factory = new FormatterFactory();
         $this->differ = new Differ();
+        $this->factory = new FormatterFactory();
     }
 
     public function run(string $firstPath, string $secondPath, string $format = 'stylish'): string
