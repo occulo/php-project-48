@@ -1,6 +1,6 @@
 <?php
 
-namespace Hexlet\Code;
+namespace Occulo\Gendiff;
 
 use Symfony\Component\Yaml\Yaml;
 
