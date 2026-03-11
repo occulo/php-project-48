@@ -1,13 +1,26 @@
 {
     "name": "occulo/gendiff",
-    "description": "A PHP-based diff generator for files",
     "type": "library",
+    "description": "A PHP-based diff generator for files",
     "license": "MIT",
+    "keywords": ["diff","differ"],
+    "homepage": "https://github.com/occulo/gendiff",
     "support": {
         "issues": "https://github.com/occulo/gendiff/issues",
         "source": "https://github.com/occulo/gendiff"
     },
     "bin": ["bin/gendiff"],
+    "require": {
+        "php": ">=8.3",
+        "docopt/docopt": "^1.0",
+        "symfony/yaml": "^7.4",
+        "funct/funct": "^1.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5",
+        "phpstan/phpstan": "^2.1",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
     "autoload": {
         "psr-4": {
             "Occulo\\Gendiff\\": "src/"
@@ -17,16 +30,5 @@
         "psr-4": {
             "Occulo\\Gendiff\\Tests\\": "tests/"
         }
-    },
-    "require": {
-        "php": "^8.3",
-        "docopt/docopt": "^1.0",
-        "symfony/yaml": "^7.4",
-        "funct/funct": "^1.6"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^11.5",
-        "phpstan/phpstan": "^2.1",
-        "squizlabs/php_codesniffer": "^4.0"
     }
 }
